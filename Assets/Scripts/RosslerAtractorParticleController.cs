@@ -13,12 +13,14 @@ public class RosslerAtractorParticleController : MonoBehaviour
     float lifeTimeCounter;
     float hCounter;
 
+    public GameObject line;
+
     private void Update()
     {
         if(infoFixed)
         {
             lifeTimeCounter += Time.deltaTime;
-            if(lifeTimeCounter > lifeTime)
+            if(false && lifeTimeCounter > lifeTime)
             {
                 Destroy(gameObject);
             }
@@ -28,7 +30,10 @@ public class RosslerAtractorParticleController : MonoBehaviour
                 if(hCounter >= h)
                 {
                     hCounter -= h;
-                    transform.position = FunctionManager.RungeKutta4thOrder(Derivative, transform.position, h, lifeTime-hCounter); // -hCounter for resuduals
+                    Vector3 originalPosition = transform.position;
+                    transform.position = FunctionManager.RungeKutta4thOrder(Derivative, originalPosition, h, lifeTime-hCounter); // -hCounter for resuduals
+                    // line.transform.localScale = new Vector3(0.01f, 0.01f, (transform.position - originalPosition).magnitude);
+                    transform.LookAt(originalPosition);
                 }
             }
         }
