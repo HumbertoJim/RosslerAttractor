@@ -21,6 +21,8 @@ public class LineManager : MonoBehaviour
     List<Vector3> positions;
     Vector3 position;
 
+    public bool drawOnUpdate = true;
+
     private void Awake()
     {
         if(line == null) line = gameObject.AddComponent<UnityEngine.LineRenderer>();
@@ -37,11 +39,12 @@ public class LineManager : MonoBehaviour
             positions.Add(FunctionManager.RungeKutta4thOrder(Derivative, positions[^1], h, h*i));
         }
         line.positionCount = positions.Count;
+        line.SetPositions(positions.ToArray());
     }
 
     private void Update()
     {
-        line.SetPositions(positions.ToArray());
+        if(drawOnUpdate) line.SetPositions(positions.ToArray());
     }
 
     Vector3 Derivative(float time, Vector3 position)
